@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Item Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<nav class="nav">
+    <a class="nav-link disabled" href="#">Item Manager</a>
+    <a class="nav-link " href="/">Home</a>
+
+</nav>
+
+<div class="container">
+    <ul id="items" class="list-group"></ul>
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        getItems();
+
+        // Get items from API
+        function getItems(){
+            $.ajax({
+                url:'http://itemapi.test/api/items'
+            }).done(function(items){
+                let output = '';
+                $.each(items, function(key, item){
+                    output += `
+              <li class="list-group-item">
+                <strong>${item.text}: </strong>${item.body}
+              </li>
+            `;
+                });
+                $('#items').append(output);
+            });
+        }
+    });
+</script>
+</body>
+</html>
