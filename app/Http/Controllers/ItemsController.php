@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Item;
 use Illuminate\Http\Request;
+use App\Item;
+use Validator;
 
 class ItemsController extends Controller
 {
@@ -15,7 +16,6 @@ class ItemsController extends Controller
     public function index()
     {
         $items = Item::all();
-
         return response()->json($items);
     }
 
@@ -37,7 +37,22 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'text' => 'required'
+        ]);
+
+        if($validator->fails()){
+            $response = array('response' => $validator->messages(), 'success' => false);
+            return $response;
+        } else {
+            // Create item
+            $item = new Item;
+            $item->text = $request->input('text');
+            $item->body = $request->input('body');
+            $item->save();
+
+            return response()->json($item);
+        }
     }
 
     /**
